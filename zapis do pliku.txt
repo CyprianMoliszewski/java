@@ -1,0 +1,18 @@
+package pl.edu.kolokwium.logic.interfaces;
+
+import pl.edu.kolokwium.data.Product;
+import java.util.List;
+
+/**
+ * Interfejs generyczny definiujący operacje zapisu do pliku.
+ * @param <T> Typ dziedziczący po klasie Product
+ */
+public interface FileWriterInterface<T extends Product> {
+    /**
+     * Zapisuje listę produktów do pliku.
+     * @param products Lista produktów do zapisania
+     * @param filePath Ścieżka do pliku
+     * @return true jeśli zapis się powiódł, false w przeciwnym przypadku
+     */
+    boolean saveToFile(List<T> products, String filePath);
+}

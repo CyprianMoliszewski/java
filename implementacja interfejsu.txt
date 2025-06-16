@@ -1,0 +1,78 @@
+package pl.edu.kolokwium.logic.services;
+
+import pl.edu.kolokwium.data.Product;
+import pl.edu.kolokwium.logic.exceptions.IncorrectValueException;
+import pl.edu.kolokwium.logic.interfaces.ShoppingInterface;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+/**
+ * Implementacja interfejsu ShoppingInterface.
+ * Zarządza listą produktów i zapewnia operacje na niej.
+ */
+public class ShoppingService implements ShoppingInterface {
+    private final List<Product> products = new ArrayList<>();
+    private static final int MAX_TOTAL_WEIGHT = 20000; // 20kg w gramach
+
+    @Override
+    public void addProduct(Product product) throws IncorrectValueException {
+        if (product == null) {
+            throw new IncorrectValueException("Produkt nie może być null");
+        }
+
+        int newTotalWeight = getTotalWeight() + product.calculateTotalWeight();
+        if (newTotalWeight > MAX_TOTAL_WEIGHT) {
+            throw new IncorrectValueException(String.format(
+                    "Nie można dodać produktu. Sumaryczna waga przekroczyłaby 20kg. Aktualna waga: %.2fkg, " +
+                            "próba dodania: %.2fkg, limit: 20kg",
+                    getTotalWeight() / 1000.0, product.calculateTotalWeight() / 1000.0));
+        }
+
+        products.add(product);
+    }
+
+    @Override
+    public List<Product> getShoppingList() {
+        return new ArrayList<>(products);
+    }
+
+    @Override
+    public Optional<Product> getProductByName(String productName) {
+        if (productName == null || productName.trim().isEmpty()) {
+            return Optional.empty();
+        }
+        return products.stream()
+                .filter(p -> p.getProductName().equalsIgnoreCase(productName))
+                .findFirst();
+    }
+
+    @Override
+    public Optional<Product> getProductByIndex(int index) {
+        if (index < 0 || index >= products.size()) {
+            return Optional.empty();
+        }
+        return Optional.of(products.get(index));
+    }
+
+    @Override
+    public int getProductCount() {
+        return products.size();
+    }
+
+    @Override
+    public int getTotalWeight() {
+        return products.stream()
+                .mapToInt(Product::calculateTotalWeight)
+                .sum();
+    }
+
+    @Override
+    public float getTotalValue() {
+        return (float) products.stream()
+                .mapToDouble(Product::calculateTotalPrice)
+                .sum();
+    }
+}

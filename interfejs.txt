@@ -1,0 +1,55 @@
+package pl.edu.kolokwium.logic.interfaces;
+
+import pl.edu.kolokwium.data.Product;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * Interfejs definiujący operacje związane z listą zakupów.
+ */
+public interface ShoppingInterface {
+    /**
+     * Dodaje produkt do listy zakupów.
+     * @param product Produkt do dodania
+     * @throws IncorrectValueException Jeśli suma wag przekroczy 20kg lub produkt jest nieprawidłowy
+     */
+    void addProduct(Product product) throws IncorrectValueException;
+
+    /**
+     * Zwraca listę wszystkich produktów.
+     * @return Lista produktów
+     */
+    List<Product> getShoppingList();
+
+    /**
+     * Zwraca produkt o podanej nazwie.
+     * @param productName Nazwa produktu do znalezienia
+     * @return Optional zawierający produkt lub pusty jeśli nie znaleziono
+     */
+    Optional<Product> getProductByName(String productName);
+
+    /**
+     * Zwraca produkt na podanej pozycji.
+     * @param index Indeks produktu na liście
+     * @return Optional zawierający produkt lub pusty jeśli indeks jest nieprawidłowy
+     */
+    Optional<Product> getProductByIndex(int index);
+
+    /**
+     * Zwraca liczbę produktów na liście.
+     * @return Liczba produktów
+     */
+    int getProductCount();
+
+    /**
+     * Oblicza całkowitą wagę wszystkich produktów.
+     * @return Całkowita waga w gramach
+     */
+    int getTotalWeight();
+
+    /**
+     * Oblicza całkowitą wartość wszystkich produktów.
+     * @return Całkowita wartość w złotych
+     */
+    float getTotalValue();
+}

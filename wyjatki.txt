@@ -1,0 +1,13 @@
+package pl.edu.kolokwium.logic.exceptions;
+
+/**
+ * Własny wyjątek rzucany w przypadku nieprawidłowych wartości.
+ * Pozwala na przekazanie komunikatu o błędzie.
+ */
+public class IncorrectValueException extends Exception {
+    /**
+     * Konstruktor wyjątku z komunikatem.
+     * @param message Komunikat opisujący błąd
+     */
+   
+}

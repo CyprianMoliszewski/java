@@ -1,0 +1,40 @@
+package pl.edu.kolokwium.logic.services;
+
+import pl.edu.kolokwium.data.Product;
+import pl.edu.kolokwium.logic.interfaces.FileWriterInterface;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Comparator;
+import java.util.List;
+
+/**
+ * Implementacja interfejsu FileWriterInterface.
+ * Zapisuje listę produktów do pliku w osobnym wątku.
+ * @param <T> Typ dziedziczący po klasie Product
+ */
+public class FileWriterService<T extends Product> implements FileWriterInterface<T> {
+    @Override
+    public boolean saveToFile(List<T> products, String filePath) {
+        // Sortowanie produktów po wartości całkowitej (cena * ilość)
+        List<T> sortedProducts = products.stream()
+                .sorted(Comparator.comparingDouble(Product::calculateTotalPrice).reversed())
+                .collect(Collectors.toList());
+
+        // Uruchomienie zapisu w osobnym wątku
+        new Thread(() -> {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                for (Product product : sortedProducts) {
+                    writer.write(product.toString());
+                    writer.newLine();
+                }
+                System.out.println("\nZakończono zapis do pliku: " + filePath);
+            } catch (IOException e) {
+                System.err.println("Błąd podczas zapisu do pliku: " + e.getMessage());
+            }
+        }).start();
+
+        return true;
+    }
+}

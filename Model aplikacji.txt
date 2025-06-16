@@ -1,0 +1,53 @@
+APLIKACJA ZAKUPOWA - MAPA ARCHITEKTURY
+│
+├── 📁 data (moduł z modelami)
+│   ├── 🟦 Product.java (abstrakcyjna)
+│   │   ├── 🟧 Deklaracja pól: productName, weight, pricePerItem
+│   │   ├── 🟧 Deklaracja metod abstrakcyjnych: calculateTotalPrice(), calculateTotalWeight()
+│   │   └── 🟩 Implementacja setterów z walidacją:
+│   │       - nazwa niepusta
+│   │       - waga 1-20kg (1000-20000g)
+│   │       - cena 0.01-1000 zł
+│   │
+│   └── 🟦 PurchasedProduct.java (konkretna)
+│       ├── 🟧 Deklaracja pola: quantity
+│       └── 🟩 Implementacja:
+│           - calculateTotalPrice() (cena * ilość)
+│           - calculateTotalWeight() (waga * ilość)
+│           - walidacja quantity (1-100 sztuk)
+│
+├── 📁 logic (moduł logiki)
+│   │
+│   ├── 📁 exceptions
+│   │   └── 🟦 IncorrectValueException.java
+│   │       - 🟩 Implementacja wyjątku z przekazaniem wiadomości
+│   │
+│   ├── 📁 interfaces
+│   │   ├── 🟦 ShoppingInterface.java
+│   │   │   - 🟧 Deklaracja operacji na liście zakupów:
+│   │   │     (dodaj/lista/pobierz/liczba/waga/wartość)
+│   │   │
+│   │   └── 🟦 FileWriterInterface.java
+│   │       - 🟧 Deklaracja zapisu do pliku (generyczna dla Product)
+│   │
+│   ├── 📁 services
+│   │   ├── 🟦 ShoppingService.java
+│   │   │   ├── 🟩 Implementacja ShoppingInterface
+│   │   │   └── 🟩 Walidacja:
+│   │   │       - suma wag ≤ 20kg (20000g)
+│   │   │       - obsługa nulli
+│   │   │
+│   │   └── 🟦 FileWriterService.java
+│   │       ├── 🟩 Implementacja FileWriterInterface
+│   │       └── 🟩 Logika:
+│   │           - sortowanie po wartości
+│   │           - zapis w osobnym wątku
+│   │
+│   └── 🟦 MainApp.java
+│       ├── 🟩 Implementacja interfejsu użytkownika
+│       └── 🟩 Obsługa wyjątków z niższych warstw:
+│           - NumberFormatException (konwersja danych)
+│           - IncorrectValueException (logika biznesowa)
+│           - IllegalArgumentException (nieprawidłowe dane)
+│
+└── 📄 pom.xml (konfiguracja Maven)

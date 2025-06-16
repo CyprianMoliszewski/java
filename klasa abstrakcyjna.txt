@@ -1,0 +1,70 @@
+package pl.edu.kolokwium.data;
+
+/**
+ * Abstrakcyjna klasa reprezentująca produkt.
+ * Zawiera podstawowe właściwości produktu.
+ */
+public abstract class Product {
+    private String productName;
+    private int weight;
+    private float pricePerItem;
+
+    /**
+     * Konstruktor klasy Product.
+     * @param productName Nazwa produktu
+     * @param weight Waga produktu w gramach
+     * @param pricePerItem Cena za sztukę produktu
+     */
+    public Product(String productName, int weight, float pricePerItem) {
+        this.productName = productName;
+        this.weight = weight;
+        this.pricePerItem = pricePerItem;
+    }
+
+    // Gettery i settery z odpowiednią walidacją
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        if (productName == null || productName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nazwa produktu nie może być pusta");
+        }
+        this.productName = productName;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        if (weight < 1 || weight > 20000) {
+            throw new IllegalArgumentException("Waga produktu musi być między 1g a 20kg");
+        }
+        this.weight = weight;
+    }
+
+    public float getPricePerItem() {
+        return pricePerItem;
+    }
+
+    public void setPricePerItem(float pricePerItem) {
+        if (pricePerItem < 0.01f || pricePerItem > 1000.0f) {
+            throw new IllegalArgumentException("Cena musi być między 0.01 a 1000 zł");
+        }
+        this.pricePerItem = pricePerItem;
+    }
+
+    /**
+     * Metoda obliczająca całkowitą wartość produktu.
+     * @return Całkowita wartość produktu
+     */
+    public abstract float calculateTotalPrice();
+
+    /**
+     * Metoda obliczająca całkowitą wagę produktu.
+     * @return Całkowita waga produktu
+     */
+    public abstract int calculateTotalWeight();
+}

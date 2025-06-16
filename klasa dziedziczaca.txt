@@ -1,0 +1,50 @@
+package pl.edu.kolokwium.data;
+
+/**
+ * Klasa reprezentująca zakupiony produkt, dziedzicząca po klasie Product.
+ * Dodatkowo przechowuje informację o liczbie sztuk.
+ */
+public class PurchasedProduct extends Product {
+    private int quantity;
+
+    /**
+     * Konstruktor klasy PurchasedProduct.
+     * @param productName Nazwa produktu
+     * @param weight Waga produktu w gramach
+     * @param pricePerItem Cena za sztukę produktu
+     * @param quantity Liczba sztuk produktu
+     */
+    public PurchasedProduct(String productName, int weight, float pricePerItem, int quantity) {
+        super(productName, weight, pricePerItem);
+        setQuantity(quantity);
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        if (quantity < 1 || quantity > 100) {
+            throw new IllegalArgumentException("Liczba sztuk musi być między 1 a 100");
+        }
+        this.quantity = quantity;
+    }
+
+    @Override
+    public float calculateTotalPrice() {
+        return getPricePerItem() * quantity;
+    }
+
+    @Override
+    public int calculateTotalWeight() {
+        return getWeight() * quantity;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Produkt: %s, Waga: %dg, Cena/szt: %.2f zł, Ilość: %d, " +
+                        "Wartość całkowita: %.2f zł, Waga całkowita: %dg",
+                getProductName(), getWeight(), getPricePerItem(), quantity,
+                calculateTotalPrice(), calculateTotalWeight());
+    }
+}
